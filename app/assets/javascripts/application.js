@@ -78,11 +78,12 @@
         else
             oldTime[0] = Number(oldTime[0]) + Number(newTime[0]);
         
-        var s = Number(oldTime[2])<10.0?'0'+oldTime[2]:''+oldTime[2];
-        var m = oldTime[1]<10?'0'+oldTime[1]:''+oldTime[1];
-        var h = oldTime[0]<10?'0'+oldTime[0]:''+oldTime[0];
+        oldTime[2] = oldTime[2].toFixed(2);
+        var s = +oldTime[2]<10?'0'+oldTime[2]:''+oldTime[2];
+        var m = +oldTime[1]<10?'0'+oldTime[1]:''+oldTime[1];
+        var h = +oldTime[0]<10?'0'+oldTime[0]:''+oldTime[0];
 
-        return h+':'+m+':'+Number(s).toFixed(2);
+        return h+':'+m+':'+s;
  }
 
  function findTIME() {
@@ -108,7 +109,7 @@
     }
     else{
         var mainBlock = document.getElementById('marker');
-        var newDivClock = document.createElement('span');
+        var newDivClock = document.createElement('div');
         newDivClock.id = document.clockform.label.value;
         newDivClock.className = "tl";
         newDivClock.onclick = function(){document.clockform.label.value = this.innerHTML.replace("<br>",'').split(':')[0]};
