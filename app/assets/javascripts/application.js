@@ -29,7 +29,7 @@
   init = 0;
   clearTimeout(clocktimer);
   document.getElementById('clock').innerHTML='00:00:00.00';
-  document.clockform.label.value=currentMarker;
+  document.getElementById("label_id_label").value=currentMarker;
  }
 
  function clearALL() {
@@ -86,39 +86,53 @@
         return h+':'+m+':'+s;
  }
 
- function findTIME() {
-    if(document.clockform.label.value==''){
-       document.clockform.label.value = 'new label';
+ function findTime() {
+    if(document.getElementById("label_id_label").value==''){
+       document.getElementById("label_id_label").value = 'new label';
     }
-    currentMarker = document.clockform.label.value;
+    currentMarker = document.getElementById("label_id_label").value;
+
+
     if (init==0) {
         startDate = new Date();
         startTIME();
         init=1;
     } 
     else {
-        var str = trim(document.clockform.label.value);
-        if(document.getElementById(document.clockform.label.value) != null){
-            var oldTime = del_spaces(document.getElementById(document.clockform.label.value).innerHTML).split(':');
+        var str = trim(document.getElementById("label_id_label").value);
+        if(document.getElementById(document.getElementById("label_id_label").value) != null){
+            var oldTime = del_spaces(document.getElementById(document.getElementById("label_id_label").value).innerHTML).split(':');
             oldTime.shift();
             var newTime = document.getElementById('clock').innerHTML.split(':');
-            document.getElementById(document.clockform.label.value).innerHTML = (str==''?'':str+': ') + 
-            sumTime(oldTime, newTime)+'<br>';
-            var xmlHttp = new XMLHttpRequest();
+            var resultTime = sumTime(oldTime, newTime);
+            document.getElementById(document.getElementById("label_id_label").value).innerHTML = (str==''?'':str+': ') + 
+            resultTime+'<br>';
+            $.ajax({
+                type: 'PUT',
+                url: '/timers/'+document.getElementById(document.getElementById("label_id_label").value).getAttribute("data-item_id"),
+                data: 'label='+str+'&'+'time='+resultTime,
+                success: function(){}
+            });
+        }
+        else{
+            var mainBlock = document.getElementById('marker');
+            var newDivClock = document.createElement('span');
+            newDivClock.id = document.getElementById("label_id_label").value;
+            newDivClock.className = "tl";
+            newDivClock.onclick = function(){document.getElementById("label_id_label").value = this.innerHTML.replace("<br>",'').split(':')[0]};
+            newDivClock.innerHTML = (str==''?'':str+': ') + 
+            document.getElementById('clock').innerHTML+'<br>';
+            mainBlock.appendChild(newDivClock);
 
-    }
-    else{
-        var mainBlock = document.getElementById('marker');
-        var newDivClock = document.createElement('div');
-        newDivClock.id = document.clockform.label.value;
-        newDivClock.className = "tl";
-        newDivClock.onclick = function(){document.clockform.label.value = this.innerHTML.replace("<br>",'').split(':')[0]};
-        newDivClock.innerHTML = (str==''?'':str+': ') + 
-        document.getElementById('clock').innerHTML+'<br>';
-        mainBlock.appendChild(newDivClock);
+            $.ajax({
+                type: 'POST',
+                url: '/timers',
+                data: 'label='+str+'&time='+document.getElementById('clock').innerHTML,//+'&authenticity_token='+,
+                success: function(){}
+            });
 
    }
-    // var oldTime = del_spaces(document.getElementById(document.clockform.label.value).innerHTML).split(':').shift();
+    // var oldTime = del_spaces(document.getElementById(document.getElementById("label_id_label").value).innerHTML).split(':').shift();
     // var newTime = document.getElementById('clock').innerHTML.split(':');
 
 
