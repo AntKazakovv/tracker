@@ -17,7 +17,7 @@
  function trim(string) { return string.replace (/\s+/g, " ").replace(/(^\s*)|(\s*)$/g, ''); }
  function del_spaces(str)
  {
-    str = str.replace(/\s/g, '').replace("<br>",'');
+    str = str.replace(/\s+/g, " ").replace(/(^\s*)|(\s*)$/g, '').split(" ")[0];
     return str;
  }
  var init=0;
@@ -26,15 +26,15 @@
  var currentMarker;
 
  function clearFields(currentMarker) {
-  init = 0;
-  clearTimeout(clocktimer);
-  document.getElementById('clock').innerHTML='00:00:00.00';
-  document.getElementById("label_id_label").value=currentMarker;
+    init = 0;
+    clearTimeout(clocktimer);
+    document.getElementById('clock').innerHTML='00:00:00.00';
+    document.getElementById("label_id_label").value=currentMarker;
  }
 
  function clearALL() {
-  clearFields(currentMarker);
-  document.getElementById('marker').innerHTML = '';
+    clearFields(currentMarker);
+    document.getElementById('marker').innerHTML = '';
  }
 
  function startTIME() { 
@@ -102,26 +102,25 @@
         var str = trim(document.getElementById("label_id_label").value);
         if(document.getElementById(document.getElementById("label_id_label").value) != null){
             var oldTime = del_spaces(document.getElementById(document.getElementById("label_id_label").value).innerHTML).split(':');
-            oldTime.shift();
             var newTime = document.getElementById('clock').innerHTML.split(':');
             var resultTime = sumTime(oldTime, newTime);
-            document.getElementById(document.getElementById("label_id_label").value).innerHTML = (str==''?'':str+': ') + 
-            resultTime+'<br>';
+            document.getElementById(document.getElementById("label_id_label").value).innerHTML = resultTime+ " &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + str;
+            
             $.ajax({
                 type: 'PUT',
                 url: '/timers/'+document.getElementById(document.getElementById("label_id_label").value).getAttribute("data-item_id"),
                 data: 'label='+str+'&'+'time='+resultTime,
                 success: function(){}
             });
+
         }
         else{
             var mainBlock = document.getElementById('marker');
-            var newDivClock = document.createElement('span');
+            var newDivClock = document.createElement('div');
             newDivClock.id = document.getElementById("label_id_label").value;
             newDivClock.className = "tl";
-            newDivClock.onclick = function(){document.getElementById("label_id_label").value = this.innerHTML.replace("<br>",'').split(':')[0]};
-            newDivClock.innerHTML = (str==''?'':str+': ') + 
-            document.getElementById('clock').innerHTML+'<br>';
+            newDivClock.onclick = function(){document.getElementById("label_id_label").value = this.innerHTML.replace (/\s+/g, " ").replace(/(^\s*)|(\s*)$/g, '').split(" ").slice(2).join(" ")};
+            newDivClock.innerHTML = document.getElementById('clock').innerHTML+" &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + str;
             mainBlock.appendChild(newDivClock);
 
             $.ajax({

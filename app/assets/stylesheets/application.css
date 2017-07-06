@@ -14,20 +14,82 @@
  *= require_self
  */
 
+body{
+	line-height: 1;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	vertical-align: baseline;
+	font-family: Georgia;
+	background-color: #4DE1C3;
+
+	font-size: 17px;
+}
+
+input {
+	width: 500px;
+	font-size: 30px;
+	color: white;
+	padding: 6px 0 4px 10px;
+	border: none;
+	background: #5EAE9E;
+}
+
 #timer{
 	width: auto;
-	height: 35px;
+	height: auto;
 }
 #timer #clock{
+	padding: 10px;
 	display: inline-block;
-	width: 100px;
-	height: 35px;
+	width: 160px;
+	height: 47px;
+	font-size: 25px;
+	color: white;
 }
 #timer #div_form{
-display: inline-block;
-	width:600px;
-	height: 35px;
+	position: absolute;
+	right: 100px;
+	display: inline-block;
+	width: 710px;
+	height: 47px;
 }
 .tl{
+	font-size: 20px;
+	padding: 15px;
+	width: 50%;
+	height: 25px;
+	background: #6FEBD2;
+	
+	border-bottom: 2px solid #5EAE9E;
 	cursor: pointer;
+	color: white;
+}
+
+button {
+	cursor: pointer;
+	font-size: 28px;
+	color: white;
+	border: 3px solid;
+	border-color: #5EAE9E;
+	background: #4DE1C3;
+	padding: 5px 0 1px 0px;
+	width: 190px;
+
+}
+button:hover {
+	background: #5EAE9E;
+}
+
+#toolbar{
+	background: #5BCBB5;
+	padding: 10px;
+	height: 50px;
+	border-bottom: none;
+	border-color: #5EAE9E;
+}
+
+#list_timers{
+	padding: 40px;
 }

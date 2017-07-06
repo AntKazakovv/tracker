@@ -1,22 +1,30 @@
 <div id="timer">
-<div id="clock">00:00:00.00</div>&nbsp;&nbsp;
 
-<div id="div_form">
 
-<%=form_tag("",remote: false, name: 'clockform') do%>
- Метка:
- <%= text_field(:label_id, :label) %>
- <%= button_tag( "START/STOP", onclick: 'findTime()', type: 'button') %>
+    <div id="toolbar">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div id="clock">00:00:00.00</div>
+        &nbsp;&nbsp;
 
-<%end%>
-  
+    <div id="div_form">
 
-</div>
-<div id="marker">
-  <% @timers.each do |timer| %>
-      <span id="<%= timer.label %>" class='tl' data-item_id=<%=timer.id%> > <%= timer.label %>:
-      <%= timer.time %></span><br>
-      
-  <% end %>
+        <%=form_tag("",remote: false, name: 'clockform') do%>
+        <%= text_field(:label_id, :label) %><%= button_tag( "START/STOP", onclick: 'findTime()', type: 'button', maxlength: 33) %>
+
+        <%end%>
+    </div>
+    </div>
+
+    <div id="list_timers">
+        <div id="marker">
+
+        <% @timers.each do |timer| %>
+            <div id="<%= timer.label %>" class='tl' data-item_id=<%=timer.id%> onclick="document.getElementById('label_id_label').value = this.innerHTML.replace(/\s+/g, ' ').replace(/(^\s*)|(\s*)$/g, '').split(' ').slice(2).join(' ')"> <%= timer.time %>
+            &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+            <%= timer.label %></div>
+            
+        <% end %>
+        </div>
+    </div>
 
 </div>
