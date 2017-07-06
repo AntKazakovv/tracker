@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:600');
 
 body{
 	line-height: 1;
@@ -21,7 +22,7 @@ body{
 	border: 0;
 	font: inherit;
 	vertical-align: baseline;
-	font-family: Georgia;
+	font-family: Arial bold;
 	background-color: #4DE1C3;
 
 	font-size: 17px;
