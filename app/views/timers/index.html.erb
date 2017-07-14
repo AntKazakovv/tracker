@@ -19,10 +19,12 @@
         <div id="marker">
 
         <% @timers.each do |timer| %>
-            <div id="<%= timer.label %>" class='tl' data-item_id=<%=timer.id%> onclick="document.getElementById('label_id_label').value = this.innerHTML.replace(/\s+/g, ' ').replace(/(^\s*)|(\s*)$/g, '').split(' ').slice(2).join(' ')"> <%= timer.time %>
+            <div id="<%= timer.label %>" class='tl' data-item_id=<%=timer.id%> onclick="document.getElementById('label_id_label').value = this.innerHTML.replace(/\s+/g, ' ').replace(/(^\s*)|(\s*)$/g, '').split(' ').slice(4,-5).join(' ')"> <%= timer.time %>
+            <%=timer.updated_at.strftime("update: %d.%m.%Y")%>
             &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-            <%= timer.label %></div>
-            
+            <%= timer.label %>
+            <%=link_to "X", timer, method: "delete" , id: "deleteButton"%>
+            </div><!-- <div id="deletet" class="<%= timer.label %>" >DELETE</div> -->
         <% end %>
         </div>
     </div>

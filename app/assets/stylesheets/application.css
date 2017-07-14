@@ -59,7 +59,7 @@ input {
 .tl{
 	font-size: 20px;
 	padding: 15px;
-	width: 50%;
+	width: 70%;
 	height: 25px;
 	background: #6FEBD2;
 	
@@ -93,4 +93,18 @@ button:hover {
 
 #list_timers{
 	padding: 40px;
+}
+
+#deletet{
+	display: inline-block;
+	background: red;
+	width: 100px;
+	height: auto;
+}
+
+#deleteButton{
+	position: absolute;
+	right: 30%;
+	color: white;
+	text-decoration: none;
 }

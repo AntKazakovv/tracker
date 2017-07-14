@@ -86,7 +86,12 @@
         return h+':'+m+':'+s;
  }
 
+
+
  function findTime() {
+    var dateNew = new Date();
+    var strdate = dateNew.toLocaleDateString();
+
     if(document.getElementById("label_id_label").value==''){
        document.getElementById("label_id_label").value = 'new label';
     }
@@ -104,13 +109,15 @@
             var oldTime = del_spaces(document.getElementById(document.getElementById("label_id_label").value).innerHTML).split(':');
             var newTime = document.getElementById('clock').innerHTML.split(':');
             var resultTime = sumTime(oldTime, newTime);
-            document.getElementById(document.getElementById("label_id_label").value).innerHTML = resultTime+ " &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + str;
+            document.getElementById(document.getElementById("label_id_label").value).innerHTML = resultTime+" update: "+strdate+ " &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + str;
             
             $.ajax({
                 type: 'PUT',
                 url: '/timers/'+document.getElementById(document.getElementById("label_id_label").value).getAttribute("data-item_id"),
                 data: 'label='+str+'&'+'time='+resultTime,
-                success: function(){}
+                success: function(data){
+                    $(newDivClock).append(' <a id="deleteButton" rel="nofollow" data-method="delete" href="/timers/' + data.id + '">X</a>');
+                }
             });
 
         }
@@ -119,15 +126,20 @@
             var newDivClock = document.createElement('div');
             newDivClock.id = document.getElementById("label_id_label").value;
             newDivClock.className = "tl";
-            newDivClock.onclick = function(){document.getElementById("label_id_label").value = this.innerHTML.replace (/\s+/g, " ").replace(/(^\s*)|(\s*)$/g, '').split(" ").slice(2).join(" ")};
-            newDivClock.innerHTML = document.getElementById('clock').innerHTML+" &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + str;
+            
+            newDivClock.onclick = function(){document.getElementById("label_id_label").value = this.innerHTML.replace (/\s+/g, " ").replace(/(^\s*)|(\s*)$/g, '').split(" ").slice(4, -5).join(" ")};
+            newDivClock.innerHTML = document.getElementById('clock').innerHTML+" update: "+strdate+" &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + str;
             mainBlock.appendChild(newDivClock);
+            
 
             $.ajax({
                 type: 'POST',
+                dataType: 'json',
                 url: '/timers',
                 data: 'label='+str+'&time='+document.getElementById('clock').innerHTML,//+'&authenticity_token='+,
-                success: function(){}
+                success: function(data){
+                    $(newDivClock).append(' <a id="deleteButton" rel="nofollow" data-method="delete" href="/timers/' + data.id + '">X</a>');
+                }
             });
 
    }

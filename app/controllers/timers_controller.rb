@@ -13,7 +13,13 @@ class TimersController < ApplicationController
     def create
         @paramTimeArray = params[:time].split(":")
         @newTimer = Timer.create(label: params[:label], time: params[:time])
-        head 200
+        render json: @newTimer
+    end
+
+    def destroy
+        @timer = Timer.find(params[:id])
+        @timer.destroy
+        redirect_to root_path
     end
 
     def update
